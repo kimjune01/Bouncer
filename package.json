@@ -1,0 +1,25 @@
+{
+  "name": "bouncer",
+  "version": "1.0.0",
+  "description": "(ws)[https://github.com/websockets/ws]",
+  "main": "server.js",
+  "dependencies": {
+    "request": "^2.83.0",
+    "ws": "^4.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kimjune01/Bouncer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kimjune01/Bouncer/issues"
+  },
+  "homepage": "https://github.com/kimjune01/Bouncer#readme"
+}

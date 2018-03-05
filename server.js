@@ -6,7 +6,7 @@ let clients = [];
 
 function clientFromWebSocket(ws) {
   return clients.find(function(client) {
-    return client.websocket == ws;
+    return client.websocket === ws;
   });
 };
 
@@ -15,6 +15,14 @@ function clientFromID(id) {
     return client.id == id;
   });
 };
+
+// Heartbeat type functions:
+function noop() {}
+
+function heartbeat() {
+  this.isAlive = true;
+  console.log("Heart beat...");
+}
 
 const wss = new WebSocket.Server({ port: 8080 });
 console.log("Websocket server listening on port 8080");
@@ -33,6 +41,10 @@ wss.on('connection', function connection(ws) {
   var newClient = new Client(guid(), ws);
   clients.push(newClient);
   console.log("new client added");
+  ws.send(Date.now());
+
+  ws.isAlive = true;
+  ws.on('pong', heartbeat);
 
   ws.on('message', function incoming(message) {
     console.log('received: %s', message);
@@ -61,9 +73,29 @@ wss.on('connection', function connection(ws) {
     // then, parse the response and send its payload to its recipient
   });
 
-  ws.send(Date.now());
+  ws.on('close', function() {
+    console.log("Websocket connect closed");
+  });
+
+  ws.on('error', function() {
+    console.log('ERROR');
+  });
 
 });
 
 
 //TODO: timer to ping all the websockets periodically
+
+const interval = setInterval(function ping() {
+  wss.clients.forEach(function each(ws) {
+    if (ws.isAlive === false) {
+      var clientToRemove = clientFromWebSocket(ws);
+      clients = clients.filter(c => c.id != clientToRemove.id);
+
+      return ws.terminate();
+    }
+
+    ws.isAlive = false;
+    ws.ping(noop);
+  });
+}, 30000);
