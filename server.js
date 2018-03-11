@@ -16,6 +16,15 @@ function clientFromID(id) {
   });
 };
 
+function removeSocket(ws) {
+  var socket = clientFromWebSocket(ws);
+  for(var i = clients.length - 1; i >= 0; i--) {
+    if(clients[i] === socket) {
+       clients.splice(i, 1);
+    }
+  }
+}
+
 // Heartbeat type functions:
 function noop() {}
 
@@ -41,6 +50,7 @@ wss.on('connection', function connection(ws) {
   var newClient = new Client(guid(), ws);
   clients.push(newClient);
   console.log("new client added");
+  console.log("clients:", clients.length);
   ws.send(Date.now());
 
   ws.isAlive = true;
@@ -74,6 +84,7 @@ wss.on('connection', function connection(ws) {
   });
 
   ws.on('close', function() {
+    removeSocket(ws)
     console.log("Websocket connect closed");
   });
 
