@@ -49,8 +49,8 @@ wss.on('connection', function connection(ws) {
 
   var newClient = new Client(guid(), ws);
   clients.push(newClient);
-  console.log("new client added");
-  console.log("clients:", clients.length);
+  console.log("client added");
+  console.log("clients.length:", clients.length);
   ws.send(Date.now());
 
   ws.isAlive = true;
@@ -85,11 +85,15 @@ wss.on('connection', function connection(ws) {
 
   ws.on('close', function() {
     removeSocket(ws)
-    console.log("Websocket connect closed");
+    console.log("client removed");
+    console.log("clients.length:", clients.length);
   });
 
-  ws.on('error', function() {
-    console.log('ERROR');
+  ws.on('error', function(e) {
+    if (e.code === "ECONNRESET") {
+      return;
+    }
+    console.log('ERROR:', e);
   });
 
 });
@@ -100,9 +104,7 @@ wss.on('connection', function connection(ws) {
 const interval = setInterval(function ping() {
   wss.clients.forEach(function each(ws) {
     if (ws.isAlive === false) {
-      var clientToRemove = clientFromWebSocket(ws);
-      clients = clients.filter(c => c.id != clientToRemove.id);
-
+      removeSocket(ws)
       return ws.terminate();
     }
 
