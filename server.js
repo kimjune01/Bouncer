@@ -25,6 +25,17 @@ function removeSocket(ws) {
   }
 }
 
+function sender(form) {
+  return form
+}
+function extract(body) {
+  var formKeys = Object.keys(JSON.parse(body).form)
+  if (formKeys.length > 0) {
+    return JSON.parse(formKeys[0])
+  } else {
+    return {}
+  }
+}
 // Heartbeat type functions:
 function noop() {}
 
@@ -66,19 +77,19 @@ wss.on('connection', function connection(ws) {
     }
     console.log("client.id: ", client.id);
     var toPost = JSON.stringify({sender: client.id, payload: JSON.parse(message)});
-    request.post({url:'https://httpbin.org/post',form: toPost}, function (error, response, body) {
+    request.post({url:'https://postman-echo.com/post',form: toPost}, function (error, response, body) {
       if (error != null) {
         console.log('error:', error); // Print the HTML for the Google homepage.
         return;
       }
       console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-      //TODO: find destination from body
-      //var recipientID = body["recipientID"]
-      //var recipient = clientFromID(recipientID)
-      //TODO: get payload from body
-      //var payload = body["payload"]
-      //recipient.websocket.send(payload)
-      ws.send(body)
+      var extracted = extract(body);
+      console.log('extracted body:', extracted);
+      var client = clientFromID(extracted.sender);
+      console.log('clientID: ', client.id);
+      if (client) {
+        client.websocket.send(JSON.stringify(extracted.payload));
+      }
     });
     // then, parse the response and send its payload to its recipient
   });
