@@ -1,6 +1,15 @@
-const WebSocket = require('ws');
+const WebSocketServer = require('ws').Server;
 const Client = require('./client.js');
 var request = require('request');
+var port = process.env.PORT || 8080
+var http = require("http")
+var express = require("express")
+
+var app = express()
+app.use(express.static(__dirname + "/"))
+
+var server = http.createServer(app)
+server.listen(port)
 
 let clients = [];
 
@@ -44,8 +53,8 @@ function heartbeat() {
   console.log("Heart beat...");
 }
 
-const wss = new WebSocket.Server({ port: 8080 });
-console.log("Websocket server listening on port 8080");
+const wss = new WebSocketServer({server: server})
+console.log("Websocket server listening on port: ", port);
 
 function guid() {
   function s4() {
