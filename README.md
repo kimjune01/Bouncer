@@ -1,6 +1,6 @@
 ### Test / Deploy
 
-get a WebSocket client: (extension)[https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo/related?hl=en]
+get a WebSocket client: [extension](https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo/related?hl=en)
 
 Local endpoint:
 ```
