@@ -87,7 +87,7 @@ wss.on('connection', function connection(ws) {
       return;
     }
     console.log("client.id: ", client.id);
-    var toPost = JSON.stringify({sender: client.id, payload: JSON.parse(message)});
+    var toPost = JSON.stringify({sender: client.id, payload: message});
     request.post({url:VOICEOS_URL,form: toPost}, function (error, response, body) {
       if (error != null) {
         console.log('error:', error); // Print the HTML for the Google homepage.
