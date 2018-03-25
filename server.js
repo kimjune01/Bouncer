@@ -11,6 +11,8 @@ app.use(express.static(__dirname + "/"))
 var server = http.createServer(app)
 server.listen(port)
 
+var VOICEOS_URL = "https://7egeo7rfc5.execute-api.us-east-1.amazonaws.com/dev/ping"
+
 let clients = [];
 
 function clientFromWebSocket(ws) {
@@ -86,7 +88,7 @@ wss.on('connection', function connection(ws) {
     }
     console.log("client.id: ", client.id);
     var toPost = JSON.stringify({sender: client.id, payload: JSON.parse(message)});
-    request.post({url:'https://postman-echo.com/post',form: toPost}, function (error, response, body) {
+    request.post({url:VOICEOS_URL,form: toPost}, function (error, response, body) {
       if (error != null) {
         console.log('error:', error); // Print the HTML for the Google homepage.
         return;
