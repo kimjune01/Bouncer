@@ -11,9 +11,9 @@ app.use(express.static(__dirname + "/"))
 var server = http.createServer(app)
 server.listen(port)
 
-var VOICEOS_URL = "https://7egeo7rfc5.execute-api.us-east-1.amazonaws.com/dev/ping"
-
 let clients = [];
+
+const VOICEOS_URL = "https://7egeo7rfc5.execute-api.us-east-1.amazonaws.com/dev/ping";
 
 function clientFromWebSocket(ws) {
   return clients.find(function(client) {
