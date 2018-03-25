@@ -40,12 +40,14 @@ function sender(form) {
   return form
 }
 function extract(body) {
-  var formKeys = Object.keys(JSON.parse(body).form)
-  if (formKeys.length > 0) {
-    return JSON.parse(formKeys[0])
-  } else {
-    return {}
-  }
+  console.log("JSON.parse(body): ", JSON.parse(body))
+  return JSON.parse(body);
+  // var formKeys = Object.keys(JSON.parse(body).form)
+  // if (formKeys.length > 0) {
+  //   return JSON.parse(formKeys[0])
+  // } else {
+  //   return {}
+  // }
 }
 // Heartbeat type functions:
 function noop() {}
