@@ -47,7 +47,6 @@ function noop() {}
 
 function heartbeat() {
   this.isAlive = true;
-  console.log("Heart beat...");
 }
 
 const wss = new WebSocketServer({server: server})
@@ -66,35 +65,26 @@ wss.on('connection', function connection(ws) {
 
   var newClient = new Client(guid(), ws);
   clients.push(newClient);
-  console.log("client added");
-  console.log("clients.length:", clients.length);
-  ws.send(Date.now());
-
   ws.isAlive = true;
   ws.on('pong', heartbeat);
 
   ws.on('message', function incoming(message) {
-    console.log('received: %s', message);
     var client = clientFromWebSocket(ws);
     if (client == null) {
-      console.log("client not found!");
-      // should not happen.
+      console.log("client not found!");      // should not happen.
       return;
     }
-    console.log("client.id: ", client.id);
-    var toPost = JSON.stringify({sender: client.id, payload: message});
-    request.post({url:VOICEOS_URL,form: toPost}, function (error, response, body) {
+    var endpoint = JSON.parse(message)['endpoint'];
+    var toPost = {sender: client.id, payload: message};
+    request.post({url:endpoint,form: toPost}, function (error, response, body) {
       if (error != null) {
         console.log('error:', error); // Print the HTML for the Google homepage.
         return;
       }
-      console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
       var extracted = extract(body);
-      console.log('extracted body:', extracted);
       var client = clientFromID(extracted.receiver);
-      console.log('clientID: ', client.id);
       if (client) {
-        client.websocket.send(JSON.stringify(extracted.payload));
+        client.websocket.send(extracted.payload);
       }
     });
     // then, parse the response and send its payload to its recipient

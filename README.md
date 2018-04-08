@@ -18,7 +18,7 @@ ws://secure-lowlands-10237.herokuapp.com/websocket/
 
 - Connect, and expect an epoch response
 
-- Send `{"RAWR":"123"}`
+- Send `{"RAWR":"123", "endpoint":"https://7egeo7rfc5.execute-api.us-east-1.amazonaws.com/dev/ping"}`
 
 - Expect the same response back
 
