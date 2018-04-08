@@ -1,6 +1,6 @@
 ## Bouncer
 
-Bouncer is a semi-persistent `websocket` connection manager that forwards a JSON to an `http` endpoint. To use it, a websocket client must first establish a connection to Bouncer through an endpoint.
+Bouncer is a semi-persistent `websocket` connection manager that forwards a JSON to an `http` endpoint. To use it, a websocket client must first establish a connection to Bouncer through a websocket.
 
 ### Test / Deploy
 
