@@ -22,4 +22,13 @@ ws://secure-lowlands-10237.herokuapp.com/websocket/
 
 - Expect the same response back
 
+### Serverside expect
+
+```
+{ sender: '651a94ee-fb57-2ff3-03c3-42b03b3402d4',
+  payload:
+   { RAWR: '125',
+     endpoint: 'https://7egeo7rfc5.execute-api.us-east-1.amazonaws.com/dev/ping' } }
+```
+
 `//TODO: ` swap the endpoint to face VoiceOS

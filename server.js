@@ -75,7 +75,7 @@ wss.on('connection', function connection(ws) {
       return;
     }
     var endpoint = JSON.parse(message)['endpoint'];
-    var toPost = {sender: client.id, payload: message};
+    var toPost = {sender: client.id, payload: JSON.parse(message)};
     request.post({url:endpoint,form: toPost}, function (error, response, body) {
       if (error != null) {
         console.log('error:', error); // Print the HTML for the Google homepage.
