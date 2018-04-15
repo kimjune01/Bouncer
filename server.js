@@ -11,8 +11,6 @@ app.use(express.static(__dirname + "/"))
 var server = http.createServer(app)
 server.listen(port)
 
-var VOICEOS_URL = "https://7egeo7rfc5.execute-api.us-east-1.amazonaws.com/dev/ping"
-
 let clients = [];
 
 function clientFromWebSocket(ws) {
@@ -75,19 +73,25 @@ wss.on('connection', function connection(ws) {
       return;
     }
     var endpoint = JSON.parse(message)['endpoint'];
-    var toPost = {sender: client.id, payload: JSON.parse(message)};
+    var toPost = JSON.stringify({sender: client.id, payload: JSON.parse(message)});
     request.post({url:endpoint,form: toPost}, function (error, response, body) {
+      console.log(body);
+      console.log(response);
+
       if (error != null) {
         console.log('error:', error); // Print the HTML for the Google homepage.
         return;
       }
       var extracted = extract(body);
       var client = clientFromID(extracted.receiver);
+      if (client == null) {
+        console.log("Endpoint did not provide receiver client!!");
+      }
       if (client) {
-        client.websocket.send(extracted.payload);
+        var responsePayload = extracted.payload;
+        client.websocket.send(extracted);
       }
     });
-    // then, parse the response and send its payload to its recipient
   });
 
   ws.on('close', function() {
