@@ -37,8 +37,10 @@ function removeSocket(ws) {
 function sender(form) {
   return form
 }
-function extract(body) {
-  return JSON.parse(body);
+function extract(responseData) {
+  //TODO: fail with sensible error message
+  var parsedOnce = JSON.parse(responseData);
+  return parsedOnce
 }
 // Heartbeat type functions:
 function noop() {}
@@ -74,22 +76,19 @@ wss.on('connection', function connection(ws) {
     }
     var endpoint = JSON.parse(message)['endpoint'];
     var toPost = JSON.stringify({sender: client.id, payload: JSON.parse(message)});
-    request.post({url:endpoint,form: toPost}, function (error, response, body) {
-      console.log(body);
-      console.log(response);
-
+    request.post({url:endpoint,form: toPost}, function (error, response, responseData) {
       if (error != null) {
         console.log('error:', error); // Print the HTML for the Google homepage.
         return;
       }
-      var extracted = extract(body);
+      var extracted = extract(responseData);
       var client = clientFromID(extracted.receiver);
       if (client == null) {
         console.log("Endpoint did not provide receiver client!!");
       }
       if (client) {
-        var responsePayload = extracted.payload;
-        client.websocket.send(extracted);
+        var responsePayload = JSON.stringify(extracted.payload);
+        client.websocket.send(responsePayload);
       }
     });
   });
