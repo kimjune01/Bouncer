@@ -82,6 +82,10 @@ wss.on('connection', function connection(ws) {
       ws.send(error.toString());
       return
     }
+    if (!('endpoint' in payload)) {
+      ws.send("Include 'endpoint' in JSON");
+      return
+    }
     let endpoint = payload['endpoint'];
     var toPost = JSON.stringify({sender: client.id, payload: payload})
     request.post({url:endpoint,form: toPost}, function (error, response, responseData) {
