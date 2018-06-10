@@ -74,11 +74,19 @@ wss.on('connection', function connection(ws) {
       console.log("client not found!");      // should not happen.
       return;
     }
-    var endpoint = JSON.parse(message)['endpoint'];
-    var toPost = JSON.stringify({sender: client.id, payload: JSON.parse(message)});
+    let payload
+    try {
+      payload = JSON.parse(message)
+    } catch(error) {
+      console.log("error: ", error)
+      ws.send(error.toString());
+      return
+    }
+    let endpoint = payload['endpoint'];
+    var toPost = JSON.stringify({sender: client.id, payload: payload})
     request.post({url:endpoint,form: toPost}, function (error, response, responseData) {
       if (error != null) {
-        console.log('error:', error); // Print the HTML for the Google homepage.
+        ws.send(JSON.stringify(error));
         return;
       }
       var extracted = extract(responseData);
@@ -103,7 +111,7 @@ wss.on('connection', function connection(ws) {
     if (e.code === "ECONNRESET") {
       return;
     }
-    console.log('ERROR:', e);
+    console.log('Websocket ERROR:', e);
   });
 
 });

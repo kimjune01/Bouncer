@@ -20,7 +20,7 @@ ws://secure-lowlands-10237.herokuapp.com/websocket/
 
 - Send
 ```
-{"speech":"Can you show me some cats", "endpoint":"https://zydkkkbc6k.execute-api.us-east-1.amazonaws.com/dev/ping"}
+{"speech":"Can you show me some cats", "endpoint":"https://7egeo7rfc5.execute-api.us-east-1.amazonaws.com/dev/ping"}
 ```
 
 - Expect the same response back
