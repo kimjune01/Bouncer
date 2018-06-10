@@ -6,7 +6,7 @@ Bouncer is a semi-persistent `websocket` connection manager that forwards a JSON
 
 get a WebSocket client: [extension](https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo/related?hl=en)
 
-Local endpoint `npm install && npm start`:
+Local endpoint `yarn && yarn start`:
 ```
 ws://localhost:8080/websocket/
 ```
